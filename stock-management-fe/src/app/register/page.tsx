@@ -1,6 +1,6 @@
 "use client";
 import { IRegister } from "@/interface/auth";
-import { registerSchema } from "@/schema";
+import { registerSchema } from "@/utils/schema";
 import {
   FormLabel,
   TextField,

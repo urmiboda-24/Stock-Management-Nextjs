@@ -10,17 +10,31 @@ import {
   Checkbox,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { loginSchema } from "@/schema";
+import { loginSchema } from "@/utils/schema";
 import { ILogin } from "@/interface/auth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const Login = () => {
+  const router = useRouter();
   const { handleSubmit, touched, errors, getFieldProps, values, isValid } =
     useFormik({
       initialValues: { email: "", password: "" },
       validationSchema: loginSchema,
       onSubmit: (values: ILogin) => {
         console.log(values);
+        if (values.email.includes("admin")) {
+          Cookies.set("role", "admin");
+          Cookies.set("token", "token");
+          // document.cookie = "role=admin; path=/";
+          // document.cookie = "token=test-token; path=/";
+          router.push("/adminDashboard");
+        } else {
+          Cookies.set("role", "user");
+          Cookies.set("token", "token");
+          router.push("/userDashboard");
+        }
       },
     });
 
