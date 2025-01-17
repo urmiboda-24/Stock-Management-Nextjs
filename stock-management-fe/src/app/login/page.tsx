@@ -15,15 +15,19 @@ import { ILogin } from "@/interface/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { login } from "@/store/slices/authSlice";
 
 const Login = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { handleSubmit, touched, errors, getFieldProps, values, isValid } =
     useFormik({
       initialValues: { email: "", password: "" },
       validationSchema: loginSchema,
       onSubmit: (values: ILogin) => {
         console.log(values);
+        dispatch(login(values));
         if (values.email.includes("admin")) {
           Cookies.set("role", "admin");
           Cookies.set("token", "token");

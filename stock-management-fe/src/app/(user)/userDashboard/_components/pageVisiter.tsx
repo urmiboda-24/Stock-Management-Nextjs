@@ -65,7 +65,7 @@ export default PageVisiter;
 const VisiterContainer = styled(Box)({
   borderRadius: "10px",
   boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-  "&:first-child": {
+  "&:first-of-type": {
     borderRadius: "10px",
     background: "#fff",
   },

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { parse } from "cookie";
 import { AppRoutings } from "./utils/enums/appRoutings";
 
 // Define routes based on roles
@@ -14,9 +13,9 @@ export default async function middleware(req: NextRequest) {
   const isUserRoute = userRoutes.includes(path as AppRoutings);
   const isPublicRoute = publicRoutes.includes(path as AppRoutings);
 
-  const cookies = parse(req.headers.get("cookie") || "");
-  const token = cookies.token;
-  const role = cookies.role;
+  const token = req.cookies.get("token")?.value;
+  const role = req.cookies.get("role")?.value;
+
   if (path === AppRoutings.Home) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
