@@ -1,5 +1,7 @@
 "use client";
 import { IRegister } from "@/interface/auth";
+import { AppDispatch } from "@/store/store";
+import { registerUser } from "@/store/thunk/auth";
 import { registerSchema } from "@/utils/schema";
 import {
   FormLabel,
@@ -13,6 +15,7 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
 const initialValue = {
   email: "",
   password: "",
@@ -20,14 +23,20 @@ const initialValue = {
   confirmPassword: "",
 };
 const Register = () => {
-  const { handleSubmit, touched, errors, getFieldProps, values, isValid } =
-    useFormik({
-      initialValues: initialValue,
-      validationSchema: registerSchema,
-      onSubmit: (values: IRegister) => {
-        console.log(values);
-      },
-    });
+  const dispatch = useDispatch<AppDispatch>();
+  const { handleSubmit, touched, errors, getFieldProps } = useFormik({
+    initialValues: initialValue,
+    validationSchema: registerSchema,
+    onSubmit: (values: IRegister) => {
+      const { confirmPassword, fullName, ...restValues } = values;
+      const payload = {
+        ...restValues,
+        full_name: values.fullName,
+      };
+      dispatch(registerUser(payload));
+      console.log(payload);
+    },
+  });
 
   return (
     <SignUpWrapper>

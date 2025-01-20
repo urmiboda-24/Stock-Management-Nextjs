@@ -37,9 +37,14 @@ export default RevenueCard;
 const CardContainer = styled(Grid)({
   alignItems: "center",
   border: "1px solid #eaedf2",
-  borderRadius: "0.5rem",
   padding: "1.25rem 1.5rem",
   background: "#fff",
+  borderRadius: "10px",
+  boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+  "&:first-of-type": {
+    borderRadius: "10px",
+    background: "#fff",
+  },
 });
 
 const RevenueImgBox = styled(Box)({

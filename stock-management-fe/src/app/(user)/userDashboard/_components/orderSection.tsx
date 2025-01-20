@@ -1,21 +1,21 @@
 "use client";
 import CustomBarChart from "@/components/customBarChart";
+import { RootState } from "@/store/store";
 import { ExpandLess, FiberManualRecordSharp } from "@mui/icons-material";
 import { Box, Typography, styled } from "@mui/material";
 import { ChartOptions } from "chart.js";
+import { useSelector } from "react-redux";
 
 const OrderSection = () => {
-  //   const { dashboardData } = UseSelector((state: any) => state.dashboard);
-  // const chart1 = dashboardData.length ? dashboardData[1] : [];
-  // const chart2 = dashboardData.length ? dashboardData[2] : [];
+  const { stockList } = useSelector((state: RootState) => state.userDashboard);
+  const chart1 = stockList.length ? stockList[1] : [];
+  const chart2 = stockList.length ? stockList[2] : [];
   const data = {
-    // labels: chart1.week,
-    labels: ["L1", "L2", "L3", "L4"],
+    labels: chart1.week,
     datasets: [
       {
         label: "",
-        // data: chart1.week_value,
-        data: [1, 5, 9, 1],
+        data: chart1.week_value,
         tension: 0.4,
         fill: true,
         barThickness: 12,
@@ -24,8 +24,7 @@ const OrderSection = () => {
       },
       {
         label: "",
-        // data: chart2.week_value,
-        data: [6, 3, 2, 7],
+        data: chart2.week_value,
         backgroundColor: "rgb(46, 125, 50)",
         tension: 0.4,
         fill: true,
@@ -83,15 +82,13 @@ const OrderSection = () => {
           <StatusBox>
             <FiberManualRecordSharp className="dotIcon" color="primary" />
             <BarChatLabelTypo>
-              {/* <span title={chart1.stock_name}>{chart1.stock_name}</span> */}
-              <span title={"tilt1"}>{"test1"}</span>
+              <span title={chart1.stock_name}>{chart1.stock_name}</span>
             </BarChatLabelTypo>
           </StatusBox>
           <StatusBox>
             <FiberManualRecordSharp className="dotIcon" color="success" />{" "}
             <BarChatLabelTypo>
-              {/* <span title={chart2.stock_name}>{chart2.stock_name}</span> */}
-              <span title={"tilt2"}>{"test2"}</span>
+              <span title={chart2.stock_name}>{chart2.stock_name}</span>
             </BarChatLabelTypo>
           </StatusBox>
         </Box>

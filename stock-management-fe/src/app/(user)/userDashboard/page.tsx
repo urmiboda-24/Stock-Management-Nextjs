@@ -1,6 +1,6 @@
 "use client";
 import CommonNavigation from "@/components/navigation";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import SaleChat from "./_components/saleChart";
 import RevenueCard from "./_components/revenueCard";
@@ -10,8 +10,18 @@ import ProgressTrack from "./_components/progressTrack";
 import OrderSection from "./_components/orderSection";
 import RankSection from "./_components/rankSection";
 import AcquisitionSection from "./_components/acquisitionSection";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { getRandomStock } from "@/store/thunk/userDashboard";
 
 const UserDashboard = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const selector = useSelector((state: RootState) => state.userDashboard);
+
+  useEffect(() => {
+    dispatch(getRandomStock());
+  }, []);
   return (
     <>
       <CommonNavigation>

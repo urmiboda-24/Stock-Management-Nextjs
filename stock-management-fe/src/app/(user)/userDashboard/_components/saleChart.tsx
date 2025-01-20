@@ -1,12 +1,14 @@
 import CustomLineChart from "@/components/customLineChart";
+import { RootState } from "@/store/store";
 import { ExpandLess } from "@mui/icons-material";
 import { Typography, Button, Divider, styled, Box } from "@mui/material";
 import { ChartOptions } from "chart.js";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const SaleChat = () => {
-  //   const { dashboardData } = UseSelector((state: any) => state.dashboard);
-  //   const saleChartData = dashboardData.length > 0 ? dashboardData[0] : [];
+  const { stockList } = useSelector((state: RootState) => state.userDashboard);
+  const saleChartData = stockList.length > 0 ? stockList[0] : [];
   const [isWeek, setIsWeek] = useState<boolean>(true);
   const onWeekMonthClick = (type: string) => {
     setIsWeek(type !== "Month");
@@ -14,13 +16,11 @@ const SaleChat = () => {
 
   const getData = () => {
     return {
-      //   labels: isWeek ? saleChartData.week : saleChartData.month,
-      labels: ["Mon", "Tue", "Wed", "Thr", "Fri", "Sat"],
+      labels: isWeek ? saleChartData.week : saleChartData.month,
       datasets: [
         {
           label: "",
-          //   data: isWeek ? saleChartData.week_value : saleChartData.month_value,
-          data: [1, 4, 5, 3, 8, 5, 3],
+          data: isWeek ? saleChartData.week_value : saleChartData.month_value,
           borderColor: "rgba(75,192,192,1)",
           backgroundColor: "rgba(75,192,192,0.2)",
           tension: 0.4,

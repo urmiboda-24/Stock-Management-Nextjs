@@ -11,33 +11,33 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import { loginSchema } from "@/utils/schema";
-import { ILogin } from "@/interface/auth";
+import { ILoginPayload } from "@/interface/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
-import { login } from "@/store/slices/authSlice";
+import { AppDispatch } from "@/store/store";
+import { loginUser } from "@/store/thunk/auth";
 
 const Login = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { handleSubmit, touched, errors, getFieldProps, values, isValid } =
     useFormik({
       initialValues: { email: "", password: "" },
       validationSchema: loginSchema,
-      onSubmit: (values: ILogin) => {
-        console.log(values);
-        dispatch(login(values));
-        if (values.email.includes("admin")) {
-          Cookies.set("role", "admin");
-          Cookies.set("token", "token");
-          // document.cookie = "role=admin; path=/";
-          // document.cookie = "token=test-token; path=/";
-          router.push("/adminDashboard");
-        } else {
-          Cookies.set("role", "user");
-          Cookies.set("token", "token");
-          router.push("/userDashboard");
+      onSubmit: async (values: ILoginPayload) => {
+        const response = await dispatch(loginUser(values));
+        const { data, success, token } = response.payload;
+        if (success) {
+          Cookies.set("token", token);
+          if (data[0].email.includes("admin")) {
+            Cookies.set("role", "admin");
+            router.push("/adminDashboard");
+          } else {
+            Cookies.set("role", "user");
+            router.push("/userDashboard");
+          }
         }
       },
     });

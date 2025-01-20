@@ -33,6 +33,9 @@ import { AppRoutings } from "@/utils/enums/appRoutings";
 import { useRouter, usePathname } from "next/navigation";
 import CommonTextField from "./customTextField";
 import Cookies from "js-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { logoutUser } from "@/store/slices/authSlice";
 
 interface CommonNavigationProps {
   showSidebar?: boolean;
@@ -69,6 +72,8 @@ const CommonNavigation: React.FC<CommonNavigationProps> = ({
 }) => {
   const router = useRouter();
   const pathName = usePathname();
+  const dispatch = useDispatch<AppDispatch>();
+  const { userName } = useSelector((state: RootState) => state.auth.userInfo);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
@@ -86,8 +91,7 @@ const CommonNavigation: React.FC<CommonNavigationProps> = ({
   const navItems = role === "admin" ? adminNavItems : userNavItems;
 
   const handleLogout = () => {
-    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"; // Clear the token
-    document.cookie = "role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"; // Clear the role
+    dispatch(logoutUser());
     router.push("/"); // Redirect to home page
   };
 
@@ -172,7 +176,7 @@ const CommonNavigation: React.FC<CommonNavigationProps> = ({
               </Box>
               <UserInfoBox onClick={handleProfileClick}>
                 <Avatar />
-                <UserNameTypo>Kitty John</UserNameTypo>
+                <UserNameTypo>{userName}</UserNameTypo>
               </UserInfoBox>
               <ProfileMenu
                 anchorEl={anchorEl}

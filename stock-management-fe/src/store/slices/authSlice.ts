@@ -1,12 +1,15 @@
-import { ILogin } from "@/interface/auth";
+"use client";
 import { checkCondition } from "@/utils/helper";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
+import { loginUser, registerUser } from "../thunk/auth";
 
 interface AuthState {
   userInfo: {
     role: string;
     userName: string;
   };
+  token: string;
 }
 
 const initialState: AuthState = {
@@ -14,39 +17,38 @@ const initialState: AuthState = {
     role: "",
     userName: "",
   },
+  token: "",
 };
 
 const authSlice = createSlice({
   name: "authReducer",
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<ILogin>) => {
-      console.log("called");
-
-      const { email } = action.payload;
-      const roleType = checkCondition(
-        email.includes("admin"),
-        "admin",
-        "user"
-      ) as string;
-      state.userInfo.role = roleType;
-      state.userInfo.userName = email;
+    logoutUser: () => {
+      Cookies.remove("role");
+      Cookies.remove("token");
     },
   },
-  //   extraReducers: (builder) => {
-  //     builder.addCase(fetchTodo.fulfilled, (state, action) => {
-  //       state.isLoading = false;
-  //       state.list = action.payload;
-  //     });
-  //     builder.addCase(fetchTodo.pending, (state, action) => {
-  //       state.isLoading = true;
-  //     });
-  //     builder.addCase(REHYDRATE, (state, action) => {
-  //       console.log("Rehydrated state:", action.type);
-  //     });
-  //   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUser.fulfilled, (state, action) => {
+        const { data, token } = action.payload;
+        if (data && data?.length && token) {
+          state.userInfo.role = checkCondition(
+            data[0].email.includes("admin"),
+            "admin",
+            "user"
+          ) as string;
+          state.userInfo.userName = data[0].full_name;
+          state.token = token;
+        }
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        console.log("register-response", action.payload.message);
+      });
+  },
 });
 
-export const { login } = authSlice.actions;
+export const { logoutUser } = authSlice.actions;
 
 export default authSlice.reducer;
