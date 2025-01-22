@@ -1,5 +1,5 @@
 "use client";
-import { IRegister } from "@/interface/auth";
+import { IRegister } from "@/utils/interface/auth";
 import { AppDispatch } from "@/store/store";
 import { registerUser } from "@/store/thunk/auth";
 import { registerSchema } from "@/utils/schema";

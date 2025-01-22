@@ -1,4 +1,4 @@
-import { DashboardAttr } from "@/interface/dashboard";
+import { DashboardAttr } from "@/utils/interface/dashboard";
 import baseService from "@/service/baseService";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getRandomStock } from "../thunk/userDashboard";

@@ -3,7 +3,7 @@ import {
   ILoginPayload,
   IRegisterPayload,
   IRegisterResponse,
-} from "@/interface/auth";
+} from "@/utils/interface/auth";
 import baseService from "@/service/baseService";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";

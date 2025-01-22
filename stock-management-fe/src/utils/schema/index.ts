@@ -21,3 +21,8 @@ export const registerSchema = Yup.object().shape({
     .required("*Confirm Password is required")
     .oneOf([Yup.ref("password")], "Passwords must match"),
 });
+
+export const transactionSchema = Yup.object().shape({
+  bill_for: Yup.string().required("Please enter bill name"),
+  status: Yup.string().required("Please select status"),
+});

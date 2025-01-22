@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import { loginSchema } from "@/utils/schema";
-import { ILoginPayload } from "@/interface/auth";
+import { ILoginPayload } from "@/utils/interface/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
